@@ -67,7 +67,7 @@ function rewrite(source: string): string {
 			// if this is an alias
 			if (element.tagName in aliases) {
 				// get definition
-				const def = aliases[element.tagName];
+				const def = aliases[element.tagName] as CheerioElement;
 
 				// combine classes
 
@@ -111,6 +111,17 @@ function rewrite(source: string): string {
 					element.attribs = Object.assign(element.attribs, {
 						class: classList
 					});
+				}
+
+				// now copy the rest attributes
+				if (def && def.attribs){
+					for(let key in def.attribs){
+						if (key != 'class' && key != 'style'){
+							if (!(key in element.attribs)){
+								element.attribs[key] = def.attribs[key];
+							}
+						}
+					}
 				}
 
 				// replace tag name

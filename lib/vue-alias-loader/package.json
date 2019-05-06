@@ -1,0 +1,12 @@
+{
+  "name": "vue-alias-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "vue-alias-loader.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3"
+  }
+}

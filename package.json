@@ -1,23 +1,20 @@
 {
-  "name": "vue-alias",
+  "name": "vue-cli-plugin-alias",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/vue-alias.js",
-  "types": "dist/vue-alias.d.ts",
+  "main": "index.js",
   "scripts": {
-    "build" : "tsc",
-	"test" : "ts-node ./test.ts"
+    "build": "tsc",
+    "test": "ts-node ./test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/cheerio": "^0.22.11",
-    "cheerio": "^1.0.0-rc.3",
-    "parse5": "^5.1.0"
+    "cheerio": "^1.0.0-rc.3"
   },
   "devDependencies": {
-    "@types/parse5": "^5.0.0",
+    "@types/cheerio": "^0.22.11",
     "ts-node": "^8.1.0",
     "typescript": "^3.4.5"
   }
