@@ -6,6 +6,6 @@ module.exports = (api, options) => {
         config.module
             .rule('vue')
             .use('vue-cli-plugin-alias')
-            .loader(path.join(__dirname, 'lib', 'vue-alias-loader', 'vue-alias-loader.js'));
+            .loader(path.join(__dirname, 'dist', 'vue-alias-loader.js'));
     });
 }
