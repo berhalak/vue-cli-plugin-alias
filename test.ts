@@ -28,6 +28,11 @@ const source = `
 		<a-defined class='other' />
 		<a-styled style="color: black" />
 		<a-slot><a-defined /></a-slot>
+		<a-as as="h1" />
+		<a-as />
+		<a-as as="h2" />
+		<a-as />
+		<a-defined as="h3" />
 	</div>
 </template>
 <script>
@@ -54,6 +59,11 @@ const expected = `
 		<div class="parent a-slot"><div class="child">
 					<div class="test a-defined"/>
 				</div></div>
+		<h2 as="h1" class="a-as"/>
+		<h2 class="a-as"/>
+		<h2 as="h2" class="a-as"/>
+		<h2 class="a-as"/>
+		<div as="h3" class="test a-defined"/>
 	</div>
 </template>
 <script>

@@ -14,13 +14,13 @@ function traverse(element: CheerioElement, visitor: (e: CheerioElement) => Cheer
 }
 
 function rewrite(source: string): string {
-	// if file doesn't hava aliases as a first line of a document, don't do enything
+	// if file doesn't hava aliases as a first line of a document, don't do anything
 	if (!source.includes("<template alias")) {
 		return source;
 	}
 
 	// define aliases dictionary	
-	const aliases: { [key: string]: CheerioElement | null } = {};
+	const aliases: { [key: string]: CheerioElement | null | string } = {};
 
 	// load vue template, wrap it in body, for use in html method at the end (html renders inner content)
 	const $ = cheerio.load(`<body>${source}</body>`, { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
@@ -39,6 +39,12 @@ function rewrite(source: string): string {
 			if (e.tagName.startsWith("a-")) {
 				if (!(e.tagName in aliases)) {
 					aliases[e.tagName] = null;
+				}
+				if (e.attribs["as"]){
+					const wasDefined = aliases[e.tagName] && typeof aliases[e.tagName] != 'string';
+					if (!wasDefined){
+						aliases[e.tagName] = e.attribs["as"];
+					}
 				}
 			}
 			// if this is defined alias, add along with all the content
@@ -125,10 +131,12 @@ function rewrite(source: string): string {
 				}
 
 				// replace tag name
-				element.tagName = def && def.tagName ? def.tagName : "div";
+				element.tagName = def && def.tagName ? def.tagName :
+								  def && typeof def == 'string' ? def :
+								  "div";
 
 				// copy content if there is anything, replacing element content
-				if (def && def.childNodes.length) {
+				if (def && def.childNodes && def.childNodes.length) {
 					let jElement = $(element);
 
 					// copy element content

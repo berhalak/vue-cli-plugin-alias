@@ -24,7 +24,7 @@ function traverse(element, visitor) {
     return null;
 }
 function rewrite(source) {
-    // if file doesn't hava aliases as a first line of a document, don't do enything
+    // if file doesn't hava aliases as a first line of a document, don't do anything
     if (!source.includes("<template alias")) {
         return source;
     }
@@ -46,6 +46,12 @@ function rewrite(source) {
             if (e.tagName.startsWith("a-")) {
                 if (!(e.tagName in aliases)) {
                     aliases[e.tagName] = null;
+                }
+                if (e.attribs["as"]) {
+                    var wasDefined = aliases[e.tagName] && typeof aliases[e.tagName] != 'string';
+                    if (!wasDefined) {
+                        aliases[e.tagName] = e.attribs["as"];
+                    }
                 }
             }
             // if this is defined alias, add along with all the content
@@ -117,9 +123,11 @@ function rewrite(source) {
                     }
                 }
                 // replace tag name
-                element.tagName = def && def.tagName ? def.tagName : "div";
+                element.tagName = def && def.tagName ? def.tagName :
+                    def && typeof def == 'string' ? def :
+                        "div";
                 // copy content if there is anything, replacing element content
-                if (def && def.childNodes.length) {
+                if (def && def.childNodes && def.childNodes.length) {
                     var jElement = $(element);
                     // copy element content
                     var elementHtml = (jElement.html() || "").trim();

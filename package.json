@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-alias",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Aliasing common html code in vue files",
   "main": "index.js",
   "dependencies": {},
