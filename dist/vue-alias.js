@@ -149,7 +149,7 @@ function rewrite(source) {
             return null;
         });
         // remove the definition
-        $("template div define").remove();
+        $("template define").remove();
     }
     // first read all aliases
     readAllAliases();
