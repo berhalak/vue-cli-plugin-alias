@@ -165,7 +165,7 @@ function rewrite(source: string): string {
 		});
 
 		// remove the definition
-		$("template div define").remove()
+		$("template define").remove()
 	}
 
 
