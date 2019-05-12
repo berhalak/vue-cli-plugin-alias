@@ -15,9 +15,11 @@ function traverse(element: CheerioElement, visitor: (e: CheerioElement) => Cheer
 
 function rewrite(source: string): string {
 	// if file doesn't hava aliases as a first line of a document, don't do anything
-	if (!source.includes("<template alias")) {
+	if (!source.startsWith("<template alias")) {
 		return source;
 	}
+
+	const isUpper = source.startsWith("<template alias upper");
 
 	// define aliases dictionary	
 	const aliases: { [key: string]: CheerioElement | null | string } = {};
@@ -36,7 +38,13 @@ function rewrite(source: string): string {
 			}
 			// if this is an inline alias (started with a, for example a-header)
 			// add this as inline
-			if (e.tagName.startsWith("a-")) {
+
+			let isAlias = e.tagName.startsWith("a-");
+			if (!isAlias && isUpper){
+				isAlias = !!/[A-Z]/.exec(e.tagName[0]);
+			}
+
+			if (isAlias) {
 				if (!(e.tagName in aliases)) {
 					aliases[e.tagName] = null;
 				}

@@ -1,7 +1,6 @@
 import { rewrite } from "./vue-alias";
 
-const source = `
-<template alias>
+const source = `<template alias upper>
 	<div>
 		<define a-defined>
 			<div class="test" />
@@ -33,14 +32,14 @@ const source = `
 		<a-as as="h2" />
 		<a-as />
 		<a-defined as="h3" />
+		<Upper />
 	</div>
 </template>
 <script>
 </script>
 `
 
-const expected = `
-<template alias="">
+const expected = `<template alias="" upper="">
 	<div>
 		
 		
@@ -64,6 +63,7 @@ const expected = `
 		<h2 as="h2" class="a-as"/>
 		<h2 class="a-as"/>
 		<div as="h3" class="test a-defined"/>
+		<div class="Upper"/>
 	</div>
 </template>
 <script>
