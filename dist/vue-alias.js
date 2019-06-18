@@ -29,10 +29,17 @@ function rewrite(source) {
         return source;
     }
     var isUpper = source.startsWith("<template alias upper");
+    var template = source.match(/<template alias.*<\/template>/s);
+    if (template && template.length) {
+        template = template[0];
+    }
+    else {
+        return source;
+    }
     // define aliases dictionary	
     var aliases = {};
     // load vue template, wrap it in body, for use in html method at the end (html renders inner content)
-    var $ = cheerio.load("<body>" + source + "</body>", { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
+    var $ = cheerio.load("<body>" + template + "</body>", { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
     // function that will read all aliases, declared in a define block, or inline
     function readAllAliases() {
         // get global template
@@ -161,7 +168,9 @@ function rewrite(source) {
     // then go through every tag and modify this according to the definition
     modifyAllTags();
     // now serialize body content to html
-    return $("body").html() || source;
+    var result = $("body").html();
+    result = source.replace(template, result);
+    return result;
 }
 exports.rewrite = rewrite;
 //# sourceMappingURL=vue-alias.js.map

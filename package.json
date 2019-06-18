@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-alias",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Aliasing common html code in vue files",
   "main": "index.js",
   "dependencies": {},
@@ -13,7 +13,12 @@
     "type": "git",
     "url": "git+https://github.com/berhalak/vue-cli-plugin-alias.git"
   },
-  "keywords": ["vue", "vue-cli", "vue-cli-plugin", "alias"],
+  "keywords": [
+    "vue",
+    "vue-cli",
+    "vue-cli-plugin",
+    "alias"
+  ],
   "author": "berhalak",
   "license": "ISC",
   "bugs": {

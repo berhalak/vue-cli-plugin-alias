@@ -21,11 +21,19 @@ function rewrite(source: string): string {
 
 	const isUpper = source.startsWith("<template alias upper");
 
+	let template: any = source.match(/<template alias.*<\/template>/s);
+
+	if (template && template.length) {
+		template = template[0] as string;
+	} else {
+		return source;
+	}
+
 	// define aliases dictionary	
 	const aliases: { [key: string]: CheerioElement | null | string } = {};
 
 	// load vue template, wrap it in body, for use in html method at the end (html renders inner content)
-	const $ = cheerio.load(`<body>${source}</body>`, { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
+	const $ = cheerio.load(`<body>${template}</body>`, { recognizeSelfClosing: true, xmlMode: true, decodeEntities: false });
 
 	// function that will read all aliases, declared in a define block, or inline
 	function readAllAliases() {
@@ -40,7 +48,7 @@ function rewrite(source: string): string {
 			// add this as inline
 
 			let isAlias = e.tagName.startsWith("a-");
-			if (!isAlias && isUpper){
+			if (!isAlias && isUpper) {
 				isAlias = !!/[A-Z]/.exec(e.tagName[0]);
 			}
 
@@ -48,9 +56,9 @@ function rewrite(source: string): string {
 				if (!(e.tagName in aliases)) {
 					aliases[e.tagName] = null;
 				}
-				if (e.attribs["as"]){
+				if (e.attribs["as"]) {
 					const wasDefined = aliases[e.tagName] && typeof aliases[e.tagName] != 'string';
-					if (!wasDefined){
+					if (!wasDefined) {
 						aliases[e.tagName] = e.attribs["as"];
 					}
 				}
@@ -128,10 +136,10 @@ function rewrite(source: string): string {
 				}
 
 				// now copy the rest attributes
-				if (def && def.attribs){
-					for(let key in def.attribs){
-						if (key != 'class' && key != 'style'){
-							if (!(key in element.attribs)){
+				if (def && def.attribs) {
+					for (let key in def.attribs) {
+						if (key != 'class' && key != 'style') {
+							if (!(key in element.attribs)) {
 								element.attribs[key] = def.attribs[key];
 							}
 						}
@@ -140,8 +148,8 @@ function rewrite(source: string): string {
 
 				// replace tag name
 				element.tagName = def && def.tagName ? def.tagName :
-								  def && typeof def == 'string' ? def :
-								  "div";
+					def && typeof def == 'string' ? def :
+						"div";
 
 				// copy content if there is anything, replacing element content
 				if (def && def.childNodes && def.childNodes.length) {
@@ -184,7 +192,9 @@ function rewrite(source: string): string {
 	modifyAllTags();
 
 	// now serialize body content to html
-	return $("body").html() || source;
+	let result = $("body").html() as string;
+	result = source.replace(template, result);
+	return result;
 }
 
 export {
