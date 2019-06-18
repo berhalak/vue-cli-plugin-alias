@@ -28,7 +28,7 @@ function rewrite(source) {
     if (!source.startsWith("<template alias")) {
         return source;
     }
-    var isUpper = source.startsWith("<template alias upper");
+    var isUpper = source.startsWith("<template alias upper") || source.startsWith("<template alias=\"\" upper=\"\"");
     var template = source.match(/<template alias.*<\/template>/s);
     if (template && template.length) {
         template = template[0];

@@ -19,7 +19,7 @@ function rewrite(source: string): string {
 		return source;
 	}
 
-	const isUpper = source.startsWith("<template alias upper");
+	const isUpper = source.startsWith("<template alias upper") || source.startsWith(`<template alias="" upper=""`);
 
 	let template: any = source.match(/<template alias.*<\/template>/s);
 
